@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InterviewAI — Interview Simulator</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#172033;--muted:#697386;--line:#e7e9ef;--accent:#635bff;--accent2:#7c3aed;--good:#18a46b;--shadow:0 18px 50px rgba(25,31,56,.09)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}.app{min-height:100vh}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:5}
+.logo{display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px}.logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#fff}.nav{display:flex;gap:28px;color:var(--muted);font-size:14px}.nav span:first-child{color:var(--text);font-weight:700}
+.avatar{width:38px;height:38px;border-radius:50%;background:#e9e7ff;display:grid;place-items:center;color:var(--accent);font-weight:800}
+main{max-width:1160px;margin:auto;padding:48px 24px}.hero{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}.eyebrow{color:var(--accent);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.12em}.hero h1{font-size:42px;line-height:1.08;margin:9px 0}.hero p{color:var(--muted);margin:0;font-size:16px}.score-pill{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 18px;text-align:right;box-shadow:var(--shadow)}.score-pill strong{font-size:24px}.score-pill small{display:block;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.4fr .8fr;gap:22px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:26px}.card h2{margin:0 0 6px;font-size:20px}.sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.field select,.field input{width:100%;padding:13px;border:1px solid #dfe2ea;border-radius:11px;background:#fff;outline:none}.field select:focus,.field input:focus{border-color:var(--accent)}
+.primary{width:100%;border:0;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:14px;font-weight:800;cursor:pointer;margin-top:20px}.secondary{border:1px solid var(--line);background:#fff;padding:10px 15px;border-radius:10px;cursor:pointer}
+.features{display:grid;gap:12px}.feature{display:flex;gap:13px;padding:14px;border-radius:14px;background:#fafaff}.icon{width:38px;height:38px;border-radius:10px;background:#ecebff;color:var(--accent);display:grid;place-items:center;font-weight:800}.feature b{font-size:14px}.feature p{font-size:12px;color:var(--muted);margin:3px 0 0;line-height:1.4}
+.hidden{display:none}.interview{max-width:900px;margin:auto}.interview-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.timer{font-weight:800;color:#e04a4a;background:#fff1f1;padding:9px 13px;border-radius:10px}.progress{height:7px;background:#e8e9f0;border-radius:99px;overflow:hidden;margin-bottom:26px}.bar{height:100%;width:33%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.3s}.ai{display:flex;gap:15px;align-items:flex-start}.bot{width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;display:grid;place-items:center;font-weight:900}.bubble{background:#f5f4ff;border:1px solid #e5e2ff;padding:17px 19px;border-radius:4px 17px 17px 17px;line-height:1.55;flex:1}.answer{margin-top:24px}.answer textarea{width:100%;height:170px;resize:none;border:1px solid #dfe2ea;border-radius:14px;padding:16px;outline:none}.answer textarea:focus{border-color:var(--accent)}.actions{display:flex;justify-content:space-between;align-items:center;margin-top:15px}.mic{border:1px solid #dddff0;background:#fff;border-radius:12px;padding:11px 15px;cursor:pointer}.mic.recording{background:#fff0f0;color:#d53c3c}.next{background:var(--accent);border:0;color:#fff;border-radius:12px;padding:12px 20px;font-weight:800;cursor:pointer}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:22px}.bigscore{display:flex;align-items:center;gap:25px}.circle{width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--accent) 0 82%,#e9eaf1 82%);display:grid;place-items:center;position:relative}.circle:after{content:"";position:absolute;width:100px;height:100px;border-radius:50%;background:#fff}.circle span{position:relative;z-index:1;font-size:29px;font-weight:900}.metric{margin:15px 0}.metric-top{display:flex;justify-content:space-between;font-size:13px;font-weight:700}.track{height:8px;background:#e9eaf1;border-radius:20px;margin-top:7px}.fill{height:100%;border-radius:20px;background:var(--accent)}.feedback{padding:15px;background:#f8f9fc;border-radius:13px;margin-top:12px}.feedback b{font-size:14px}.feedback p{font-size:13px;color:var(--muted);line-height:1.5;margin:6px 0 0}.history{display:grid;gap:10px}.history-item{display:flex;justify-content:space-between;padding:14px;border:1px solid var(--line);border-radius:12px}.history-item small{color:var(--muted)}.grade{font-weight:900;color:var(--good)}
+@media(max-width:800px){.grid,.results{grid-template-columns:1fr}.nav{display:none}.hero{align-items:flex-start;gap:20px;flex-direction:column}.hero h1{font-size:34px}.formgrid{grid-template-columns:1fr}.score-pill{text-align:left}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+<div class="logo"><div class="logo-mark">AI</div> InterviewAI</div>
+<nav class="nav"><span>Simulator</span><span>History</span><span>How it works</span></nav>
+<div class="avatar">P</div>
+</header>
+
+<main>
+<section id="setup">
+<div class="hero"><div><div class="eyebrow">AI-powered practice</div><h1>Practice interviews.<br>Build confidence.</h1><p>Simulate a real interview and get instant, actionable feedback.</p></div><div class="score-pill"><strong>82%</strong><small>Last interview score</small></div></div>
+<div class="grid">
+<div class="card">
+<h2>Configure your interview</h2><div class="sub">Choose the interview that matches your next opportunity.</div>
+<div class="formgrid">
+<div class="field"><label>Target role</label><select id="role"><option>Software Engineer</option><option>Frontend Developer</option><option>Data Analyst</option><option>Product Manager</option></select></div>
+<div class="field"><label>Experience</label><select><option>Fresher / Student</option><option>0–2 years</option><option>2–5 years</option></select></div>
+<div class="field"><label>Interview type</label><select><option>Mixed — Technical + HR</option><option>Technical</option><option>Behavioral / HR</option></select></div>
+<div class="field"><label>Difficulty</label><select><option>Medium</option><option>Easy</option><option>Hard</option></select></div>
+</div>
+<button class="primary" onclick="startInterview()">Start AI Interview →</button>
+</div>
+<div class="card"><h2>What you'll get</h2><div class="sub">A realistic practice loop designed to improve every attempt.</div>
+<div class="features">
+<div class="feature"><div class="icon">AI</div><div><b>Dynamic questions</b><p>Questions adapt to your role and previous answers.</p></div></div>
+<div class="feature"><div class="icon">↗</div><div><b>Instant scoring</b><p>See clear scores for communication, confidence and knowledge.</p></div></div>
+<div class="feature"><div class="icon">✓</div><div><b>Actionable feedback</b><p>Understand exactly what to improve before your real interview.</p></div></div>
+</div></div>
+</div>
+</section>
+
+<section id="interview" class="hidden interview">
+<div class="interview-head"><div><div class="eyebrow">Live interview</div><h1 id="qtitle" style="margin:6px 0">Question 1 of 3</h1></div><div class="timer" id="timer">01:00</div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="card">
+<div class="ai"><div class="bot">AI</div><div class="bubble" id="question">Tell me about yourself and why you're interested in this role.</div></div>
+<div class="answer"><textarea id="answer" placeholder="Type your answer here..."></textarea>
+<div class="actions"><button class="mic" id="mic" onclick="toggleMic()">🎙 Voice answer</button><button class="next" onclick="nextQuestion()">Submit answer →</button></div></div>
+</div>
+</section>
+
+<section id="results" class="hidden">
+<div class="hero"><div><div class="eyebrow">Interview complete</div><h1>Your performance report</h1><p>Here’s how you performed in this practice interview.</p></div><button class="secondary" onclick="location.reload()">New interview</button></div>
+<div class="results">
+<div class="card"><h2>Overall score</h2><div class="bigscore"><div class="circle"><span>82</span></div><div><h2 style="margin:0">Strong start!</h2><p class="sub" style="margin:8px 0 0">You demonstrated solid communication and role awareness.</p></div></div>
+<div class="metric"><div class="metric-top"><span>Technical knowledge</span><span>78%</span></div><div class="track"><div class="fill" style="width:78%"></div></div></div>
+<div class="metric"><div class="metric-top"><span>Communication</span><span>88%</span></div><div class="track"><div class="fill" style="width:88%"></div></div></div>
+<div class="metric"><div class="metric-top"><span>Confidence</span><span>81%</span></div><div class="track"><div class="fill" style="width:81%"></div></div></div>
+</div>
+<div class="card"><h2>AI feedback</h2><div class="feedback"><b>✓ What you did well</b><p>Your answers were structured and you communicated your thought process clearly.</p></div><div class="feedback"><b>↑ Improve next</b><p>Add measurable examples to demonstrate impact. Avoid generic statements when describing projects.</p></div><div class="feedback"><b>💡 Interview tip</b><p>Use the STAR structure for behavioral questions: Situation, Task, Action, Result.</p></div></div>
+</div>
+<div class="card" style="margin-top:22px"><h2>Interview history</h2><div class="sub">Your recent practice sessions.</div><div class="history"><div class="history-item"><div><b>Software Engineer</b><br><small>Mixed interview · Today</small></div><span class="grade">82%</span></div><div class="history-item"><div><b>Frontend Developer</b><br><small>Technical · Aug 28</small></div><span class="grade">76%</span></div></div></div>
+</section>
+</main>
+</div>
+<script>
+const questions=[
+"Tell me about yourself and why you're interested in this role.",
+"Explain a technical project you've worked on. What problem did it solve and what was your contribution?",
+"Tell me about a time you faced a difficult problem. How did you approach it and what was the result?"
+];
+let index=0,time=60,interval;
+function startInterview(){document.getElementById('setup').classList.add('hidden');document.getElementById('interview').classList.remove('hidden');showQuestion();startTimer()}
+function showQuestion(){document.getElementById('qtitle').textContent=`Question ${index+1} of ${questions.length}`;document.getElementById('question').textContent=questions[index];document.getElementById('bar').style.width=((index+1)/questions.length*100)+'%';document.getElementById('answer').value='';time=60;document.getElementById('timer').textContent='01:00'}
+function startTimer(){clearInterval(interval);interval=setInterval(()=>{time--;document.getElementById('timer').textContent=`00:${String(time).padStart(2,'0')}`;if(time<=0){nextQuestion()}},1000)}
+function nextQuestion(){if(index<questions.length-1){index++;showQuestion()}else{clearInterval(interval);document.getElementById('interview').classList.add('hidden');document.getElementById('results').classList.remove('hidden')}}
+function toggleMic(){const b=document.getElementById('mic');b.classList.toggle('recording');b.textContent=b.classList.contains('recording')?'⏺ Recording...':'🎙 Voice answer'}
+</script>
+</body>
+</html>
